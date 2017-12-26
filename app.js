@@ -2,7 +2,9 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+// cookie解析包
 var cookieParser = require('cookie-parser');
+// 请求体解析包
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
@@ -28,6 +30,7 @@ app.use('/users', users);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
+  console.log(err.status);
   err.status = 404;
   next(err);
 });
