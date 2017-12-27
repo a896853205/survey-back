@@ -2,9 +2,9 @@
  * @Author: qc 
  * @Date: 2017-12-26 20:36:44 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2017-12-26 20:48:35
+ * @Last Modified time: 2017-12-27 16:05:09
  */
-import {connection as connectionConfig} from './dbconfig';
+let connectionConfig = require('./dbconfig');
 let mysql = require('mysql');
 let db = {};
 /**
@@ -12,7 +12,7 @@ let db = {};
  * @param {*操作数据库语句} sqllan 
  * @param {*查询成功时的回调函数} fn 
  */
-db.query = function(sqllan, fn){
+db.query = function (sqllan, fn) {
   let connection = mysql.createConnection(connectionConfig);
   connection.connect((err) => {
     if (err) {
@@ -33,4 +33,4 @@ db.query = function(sqllan, fn){
   });
 }
 
-export {db};
+module.exports = db;
