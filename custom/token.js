@@ -2,13 +2,13 @@
  * @Author: qc 
  * @Date: 2017-12-28 23:12:05 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2017-12-29 00:12:33
+ * @Last Modified time: 2017-12-29 15:47:29
  */
 let jwt = require('jsonwebtoken');
 let webToken = {};
 // 生成token配置项
 let opation = {
-  duration:Math.floor(Date.now() / 1000) - 60*60*2, // 持续两小时有效
+  duration:Math.floor(Date.now() / 1000) + 60*60*2, // 持续两小时有效
   secret:'secret', //加密字符串
 };
 /**
@@ -17,7 +17,7 @@ let opation = {
  */
 webToken.getToken = function (obj){
   return jwt.sign({
-      foo:obj,
+      data:obj,
       iat:opation.duration
     },opation.secret);
 }
@@ -26,8 +26,21 @@ webToken.getToken = function (obj){
  * @param {*要解密的token} token 
  */
 webToken.decodeToken = function (token){
-  return new Promise((resolve,reject)=>{
-    jwt.verify(token,opation.secret,resolve);
-  });
+  try{
+    return jwt.verify(token,opation.secret);
+  }catch(err){
+    return 0;
+  }
+}
+/**
+ * 直接获取到data的方法
+ * @param {*要解析的token} token 
+ */
+webToken.decodeDataToken = function (token){
+  try{
+    return jwt.verify(token,opation.secret).data;
+  }catch(err){
+    return 0;
+  }
 }
 module.exports = webToken;

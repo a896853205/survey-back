@@ -1,5 +1,5 @@
 let express = require('express');
-let webToken = require('./custom/token');
+let webToken = require('../custom/token');
 let router = express.Router();
 
 let userOperate = require('../dao/userDao'); 

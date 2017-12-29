@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 // 请求体解析包
 var bodyParser = require('body-parser');
 
+let verify = require('./middle/checkId');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -24,13 +25,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', index);
 app.use('/users', users);
-
+app.use('/home', verify);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
-  console.log(err.status);
+  console.log('err:' + err.status);
   err.status = 404;
   next(err);
 });
