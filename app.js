@@ -7,14 +7,22 @@ var cookieParser = require('cookie-parser');
 // 请求体解析包
 var bodyParser = require('body-parser');
 
-let verify = require('./middle/checkId');
-var index = require('./routes/index');
-var users = require('./routes/users');
+// 基本文件路径和测试路径
+let mainPath = './src/main';
+let testPath = './src/test';
+
+// 中间件
+let verifyMiddle = require(`${mainPath}/app/middle/checkId`);
+
+// 路由
+var indexRouter = require(`${mainPath}/app/routes/index`);
+var usersRouter = require(`${mainPath}/app/routes/users`);
 
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+// jade设置路径
+app.set('views', path.join(__dirname, `${mainPath}/webapp/views`));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
@@ -26,9 +34,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use('/', index);
-app.use('/users', users);
-app.use('/home', verify);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/home', verifyMiddle);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

@@ -1,4 +1,4 @@
-let jwt = require('../custom/token');
+let jwt = require('../common/token');
 let userOperate = require('../dao/userDao');
 /**
  * 验证token是否合法的中间件,不一致返回status:0
