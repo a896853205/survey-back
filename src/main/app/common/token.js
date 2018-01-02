@@ -2,7 +2,7 @@
  * @Author: qc 
  * @Date: 2017-12-28 23:12:05 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2017-12-29 15:47:29
+ * @Last Modified time: 2018-01-03 01:14:08
  */
 let jwt = require('jsonwebtoken');
 let webToken = {};
