@@ -1,5 +1,12 @@
+/*
+ * @Author: qc
+ * @Date: 2018-01-03 15:24:59 
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-01-03 16:46:25
+ */
 let jwt = require('../common/token');
 let userOperate = require('../dao/userDao');
+let result = require('../common/returnObject');
 /**
  * 验证token是否合法的中间件,不一致返回status:0
  * @param {*请求} req 
@@ -24,11 +31,16 @@ module.exports = function(req, res, next){
     })
   else
     rightFlag = false;
-  if(!rightFlag)
-    return res.json({
-      status:0
-    });
-  next();
+  if(!rightFlag){
+    result.errMessage = 'token不合法';
+    return res.json(result);
+  }else{
+    // 将user传递给下个中间件
+    req.local = {
+      user:user
+    }
+    next();
+  }
 }
 
 /**

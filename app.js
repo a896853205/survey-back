@@ -12,11 +12,13 @@ let mainPath = './src/main';
 let testPath = './src/test';
 
 // 中间件
-let verifyMiddle = require(`${mainPath}/app/middle/checkId`);
+let verifyIdMiddle = require(`${mainPath}/app/middle/checkId`);
+let verifyRoleMiddle = require(`${mainPath}/app/middle/checkRole`);
 
 // 路由
 var indexRouter = require(`${mainPath}/app/routes/index`);
 var usersRouter = require(`${mainPath}/app/routes/users`);
+let managerRouter = require(`${mainPath}/app/routes/manager`);
 
 var app = express();
 
@@ -33,10 +35,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/home', verifyMiddle);
+// 判断权限的中间件
+app.use('/home', verifyIdMiddle, verifyRoleMiddle);
+// 判断结束进入主页
+app.use('/home/manager', managerRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

@@ -2,7 +2,7 @@
  * @Author: qc 
  * @Date: 2017-12-26 20:36:44 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-03 00:33:48
+ * @Last Modified time: 2018-01-03 14:39:14
  */
 let connectionConfig = require('./dbconfig');
 let mysql = require('mysql');
