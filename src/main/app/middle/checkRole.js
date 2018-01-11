@@ -2,10 +2,11 @@
  * @Author:qc
  * @Date: 2018-01-03 15:24:50 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-03 17:44:53
+ * @Last Modified time: 2018-01-11 19:50:06
  */
 let roleDao = require('../dao/roleDao');
-let result = require('../common/returnObject');
+// 返回状态对象
+let resultFunction = require('../common/returnObject');
 /**
  * 查看权限中间件
  * @param {*请求} req
@@ -13,6 +14,8 @@ let result = require('../common/returnObject');
  * @param {*下一步} next
  */
 module.exports = (req, res, next) => {
+  // 新建返回对象
+  let result = new resultFunction();
   let role = getRoleUrl(req.baseUrl,req.originalUrl);
   if(req.local.user.role_id){
     roleDao.getOneRoleById(req.local.user.role_id).then((value)=>{

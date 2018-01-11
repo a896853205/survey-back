@@ -2,11 +2,12 @@
  * @Author: qc
  * @Date: 2018-01-03 15:24:59 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-03 16:46:25
+ * @Last Modified time: 2018-01-11 19:49:46
  */
 let jwt = require('../common/token');
 let userOperate = require('../dao/userDao');
-let result = require('../common/returnObject');
+// 返回状态对象
+let resultFunction = require('../common/returnObject');
 /**
  * 验证token是否合法的中间件,不一致返回status:0
  * @param {*请求} req 
@@ -14,6 +15,8 @@ let result = require('../common/returnObject');
  * @param {*下一步} next 
  */
 module.exports = function(req, res, next){
+  // 新建返回对象
+  let result = new resultFunction();
   let token = req.headers["authorization"];
   let decoded = jwt.decodeToken(token);
   let rightFlag = true;

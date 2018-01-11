@@ -6,7 +6,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 // 请求体解析包
 var bodyParser = require('body-parser');
-
+// 设置跨域
+let corsConfig = require('./corsConfig');
 // 基本文件路径和测试路径
 let mainPath = './src/main';
 let testPath = './src/test';
@@ -22,6 +23,8 @@ let managerRouter = require(`${mainPath}/app/routes/manager`);
 
 var app = express();
 
+// 允许跨域
+app.all('*',corsConfig);
 // view engine setup
 // jade设置路径
 app.set('views', path.join(__dirname, `${mainPath}/webapp/views`));
@@ -44,7 +47,9 @@ app.use('/home/manager', managerRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
+  // @ts-ignore
   console.log('err:' + err.status);
+  // @ts-ignore
   err.status = 404;
   next(err);
 });
