@@ -2,13 +2,13 @@
  * @Author: qc 
  * @Date: 2017-12-28 23:12:05 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-03 01:14:08
+ * @Last Modified time: 2018-01-13 23:38:58
  */
 let jwt = require('jsonwebtoken');
 let webToken = {};
 // 生成token配置项
 let opation = {
-  duration:Math.floor(Date.now() / 1000) + 60*60*2, // 持续两小时有效
+  duration: Math.floor(Date.now() / 1000) + 60*60*2, // 持续两小时有效
   secret:'secret', //加密字符串
 };
 /**
@@ -17,9 +17,9 @@ let opation = {
  */
 webToken.getToken = function (obj){
   return jwt.sign({
-      data:obj,
-      iat:opation.duration
-    },opation.secret);
+      data: obj,
+      iat: opation.duration
+    }, opation.secret);
 }
 /**
  * 给token解密

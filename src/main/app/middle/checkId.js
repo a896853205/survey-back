@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-03 15:24:59 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-11 19:49:46
+ * @Last Modified time: 2018-01-14 00:05:28
  */
 let jwt = require('../common/token');
 let userOperate = require('../dao/userDao');
@@ -36,7 +36,7 @@ module.exports = function(req, res, next){
     rightFlag = false;
   if(!rightFlag){
     result.errMessage = 'token不合法';
-    return res.json(result);
+    return res.json({statusObj: result});
   }else{
     // 将user传递给下个中间件
     req.local = {

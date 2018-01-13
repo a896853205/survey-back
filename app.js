@@ -18,7 +18,10 @@ let verifyRoleMiddle = require(`${mainPath}/app/middle/checkRole`);
 
 // 路由
 var indexRouter = require(`${mainPath}/app/routes/index`);
-var usersRouter = require(`${mainPath}/app/routes/users`);
+let LoginRouter = require(`${mainPath}/app/routes/login`);
+let registerRouter = require(`${mainPath}/app/routes/register`);
+let getTokenRouter = require(`${mainPath}/app/routes/getToken`);
+
 let managerRouter = require(`${mainPath}/app/routes/manager`);
 
 var app = express();
@@ -38,12 +41,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-// 判断权限的中间件
+// 没有权限的的路由
+app.use('/', indexRouter, LoginRouter, registerRouter);
+// 判断登录权限的中间件
 app.use('/home', verifyIdMiddle, verifyRoleMiddle);
 // 判断结束进入主页
 app.use('/home/manager', managerRouter);
+// 获取token的值
+app.use('/home/all', getTokenRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
