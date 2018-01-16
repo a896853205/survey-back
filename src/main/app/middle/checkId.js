@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-03 15:24:59 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-14 00:05:28
+ * @Last Modified time: 2018-01-16 14:31:23
  */
 let jwt = require('../common/token');
 let userOperate = require('../dao/userDao');

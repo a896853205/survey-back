@@ -21,6 +21,7 @@ var indexRouter = require(`${mainPath}/app/routes/index`);
 let LoginRouter = require(`${mainPath}/app/routes/login`);
 let registerRouter = require(`${mainPath}/app/routes/register`);
 let getTokenRouter = require(`${mainPath}/app/routes/getToken`);
+let getNavRouter = require(`${mainPath}/app/routes/nav`)
 
 let managerRouter = require(`${mainPath}/app/routes/manager`);
 
@@ -47,8 +48,8 @@ app.use('/', indexRouter, LoginRouter, registerRouter);
 app.use('/home', verifyIdMiddle, verifyRoleMiddle);
 // 判断结束进入主页
 app.use('/home/manager', managerRouter);
-// 获取token的值
-app.use('/home/all', getTokenRouter);
+// 获取token的值,根据自己的权限获取nav的值
+app.use('/home/all', getTokenRouter, getNavRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
