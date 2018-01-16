@@ -2,16 +2,16 @@
  * @Author: qc 
  * @Date: 2017-12-26 20:36:44 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-03 14:39:14
+ * @Last Modified time: 2018-01-16 14:54:25
  */
 let connectionConfig = require('./dbconfig');
 let mysql = require('mysql');
 let db = {};
 /**
  * 基本查询函数
- * @param {*操作数据库语句} sqllan 
- * @param {*sql参数} params
- * @param {*成功时的回调函数} fn 
+ * @param {String} sqllan 操作数据库语句
+ * @param {Array} params sql参数
+ * @param {Function} fn 成功时的回调函数
  */
 db.query = function (sqllan, params, fn) {
   let connection = mysql.createConnection(connectionConfig);

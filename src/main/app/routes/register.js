@@ -5,7 +5,9 @@ let resultFunction = require('../common/returnObject');
 let router = express.Router();
 
 let userOperate = require('../dao/userDao'); 
-
+/**
+ * 注册方法
+ */
 router.post('/register', (req, res, next) => {
   // 新建返回对象
   let result = new resultFunction();

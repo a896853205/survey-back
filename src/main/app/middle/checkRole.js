@@ -2,16 +2,16 @@
  * @Author:qc
  * @Date: 2018-01-03 15:24:50 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-14 00:01:54
+ * @Last Modified time: 2018-01-16 14:45:33
  */
 let roleDao = require('../dao/roleDao');
 // 返回状态对象
 let resultFunction = require('../common/returnObject');
 /**
  * 查看权限中间件
- * @param {*请求} req
- * @param {*响应} res
- * @param {*下一步} next
+ * @param {Object} req 请求
+ * @param {Object} res 响应
+ * @param {Function} next 下一步
  */
 module.exports = (req, res, next) => {
   // 新建返回对象
@@ -36,8 +36,8 @@ module.exports = (req, res, next) => {
 }
 /**
  * 获取权限路径
- * @param {*基本路径} baseUrl 
- * @param {*额外路径} originalUrl 
+ * @param {String} baseUrl 基本路径
+ * @param {String} originalUrl 额外路径
  */
 function getRoleUrl(baseUrl, originalUrl){
   return originalUrl.slice(baseUrl.length).split('/')[1];

@@ -2,7 +2,13 @@
  * @Author: qc
  * @Date: 2018-01-11 19:02:26 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-16 14:31:11
+ * @Last Modified time: 2018-01-16 14:36:45
+ */
+/**
+ * 跨域配置
+ * @param {Object} req 请求头
+ * @param {Object} res 响应头
+ * @param {Function} next 下一步
  */
 module.exports = function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:8080");

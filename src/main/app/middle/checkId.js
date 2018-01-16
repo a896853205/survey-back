@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-03 15:24:59 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-16 14:31:23
+ * @Last Modified time: 2018-01-16 14:36:09
  */
 let jwt = require('../common/token');
 let userOperate = require('../dao/userDao');
@@ -10,9 +10,9 @@ let userOperate = require('../dao/userDao');
 let resultFunction = require('../common/returnObject');
 /**
  * 验证token是否合法的中间件,不一致返回status:0
- * @param {*请求} req 
- * @param {*响应} res 
- * @param {*下一步} next 
+ * @param {Object} req 请求
+ * @param {Object} res 响应
+ * @param {Function} next 下一步
  */
 module.exports = function(req, res, next){
   // 新建返回对象
@@ -48,7 +48,7 @@ module.exports = function(req, res, next){
 
 /**
  * 判断身份是否过期
- * @param {*} oldTime 
+ * @param {number} oldTime 旧时光
  */
 function isTimeOut(oldTime){
   let nowTime = Math.floor(Date.now() / 1000);
