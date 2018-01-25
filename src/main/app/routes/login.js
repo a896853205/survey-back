@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-13 14:41:27 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-13 17:56:01
+ * @Last Modified time: 2018-01-19 20:50:30
  */
 let express = require('express');
 let webToken = require('../common/token');
@@ -23,14 +23,18 @@ router.post('/login',(req, res, next)=>{
   if (!user.account){
     // 返回用户名为空的json
     result.errMessage = '用户名为空';
-    return res.json(result);
+    return res.json({
+      statusObj: result
+    });
   }
   // 查询成功返回json
   userOperate.oneUserQuery(user.account).then(value => {
     // 判断若果没有此用户
     if (!value[0]) {
       result.errMessage = '没有此用户';
-      return res.json(result);
+      return res.json({
+        statusObj: result
+      });
     } else {
       // 返回是个数组输出第一个
       if(value[0].password === user.password){
@@ -38,13 +42,16 @@ router.post('/login',(req, res, next)=>{
         // 返回status和token
         let dataBaseUser = value[0];
         dataBaseUser.password = '';
-        return res.json({statusObj: result, 
+        return res.json({
+          statusObj: result, 
           token: webToken.getToken(value[0]), 
           user: dataBaseUser
         });
       }else{
         result.errMessage = '密码不正确';
-        return res.json(result);
+        return res.json({
+          statusObj: result
+        });
       }
     }
   }).catch((err) => {

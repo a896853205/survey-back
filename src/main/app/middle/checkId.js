@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-03 15:24:59 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-16 14:36:09
+ * @Last Modified time: 2018-01-25 23:14:48
  */
 let jwt = require('../common/token');
 let userOperate = require('../dao/userDao');
@@ -42,7 +42,7 @@ module.exports = function(req, res, next){
     req.local = {
       user:user
     }
-    next();
+    return next();
   }
 }
 

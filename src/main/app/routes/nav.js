@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-16 11:20:47 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-16 13:21:48
+ * @Last Modified time: 2018-01-20 22:19:07
  */
 let express = require('express');
 let webToken = require('../common/token');
@@ -22,7 +22,7 @@ router.post('/getNav',(req, res, next) => {
     navArr = createNavObj(value, 1, 0);
     result.status = 1;
     // 查询nav
-    res.json({
+    return res.json({
       statusObj: result,
       navData: navArr
     });
