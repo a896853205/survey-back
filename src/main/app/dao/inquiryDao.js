@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-19 16:11:31 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-25 23:48:34
+ * @Last Modified time: 2018-01-26 00:04:55
  */
 
 let inquiryMapper = require('../../resources/mapper/inquiryMapper');
@@ -39,5 +39,12 @@ inquiryOperate.insertOne = ({uuid, user_id, title, description, state}, fn) => {
   db.transactions(sqlparam.sqlArr, fn)
 }
 
-
+/**
+ * 查询一个问卷
+ */
+inquiryOperate.selectOne = id => {
+  return new Promise((resolve, reject) => {
+    db.query(inquiryMapper.selectInquiry, [id], resolve)
+  })
+}
 module.exports = inquiryOperate;
