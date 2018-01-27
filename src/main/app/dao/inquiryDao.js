@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-19 16:11:31 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-27 14:15:10
+ * @Last Modified time: 2018-01-28 00:19:58
  */
 
 let inquiryMapper = require('../../resources/mapper/inquiryMapper');
@@ -38,19 +38,36 @@ inquiryOperate.insertOne = ({uuid, user_id, title, description, state}, fn) => {
   db.transactions(sqlparam.sqlArr, fn)
 }
 /**
- * 更新一个问题
- */
-inquiryOperate.updateOne = (questionInfo, fn) => {
-  let sqlparam = new SqlParams()
-  sqlparam.setSql(questionMapper.deleteQuestion, [questionInfo.id])
-  db.transactions(sqlparam.sqlArr, fn)
-}
-/**
  * 查询一个问卷
  */
 inquiryOperate.selectOne = id => {
   return new Promise((resolve, reject) => {
     db.query(inquiryMapper.selectInquiry, [id], resolve)
   })
+}
+/**
+ * 更新问卷整体
+ */
+inquiryOperate.updateAll = (inquiryInfo, questionArr, opationArr, fn) => {
+  let sqlparam = new SqlParams()
+  // 先全部清除
+  questionArr.forEach(questionItem => {
+    sqlparam.setSql(opationMapper.deleteSomeOpations, [questionItem.id])
+    // 然后删除这个问题
+    sqlparam.setSql(questionMapper.deleteQuestion, [questionItem.id])
+  })
+  // 然后再全部插入
+  try {
+    inquiryInfo.questionData.forEach((questionItem, index) => {
+      let questionUuid = uuidin()
+      sqlparam.setSql(questionMapper.insertQuestion, [questionUuid, inquiryInfo.id, index + 1, 1, questionItem.name, ''])
+      questionItem.opationData.forEach(opationItem => {
+        sqlparam.setSql(opationMapper.insertOpation, [uuidin(), '', questionUuid, opationItem.name, opationItem.score])
+      })
+    })
+  } catch (e) {
+    console.log(e)
+  }
+  db.transactions(sqlparam.sqlArr, fn)
 }
 module.exports = inquiryOperate;

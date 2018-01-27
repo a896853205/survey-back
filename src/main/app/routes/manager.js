@@ -65,22 +65,32 @@ router.post('/selectInquiry', (req, res, next) => {
   .then(value => {
     questionInfo = value
     let OpationFinishNum = 0
-    questionInfo.forEach ((item, index) => {
-      opationOperate.selectSomeOpations(item.id)
-      .then(value => {
-        OpationFinishNum = OpationFinishNum + 1
-        opationInfo = opationInfo.concat(value)
-        if (questionInfo.length === OpationFinishNum) {
-          result.status = 1
-          return res.json({
-            statusObj: result,
-            inquiryInfo,
-            questionInfo,
-            opationInfo
-          })
-        }
+    if (questionInfo.length !== 0) {
+      questionInfo.forEach ((item, index) => {
+        opationOperate.selectSomeOpations(item.id)
+        .then(value => {
+          OpationFinishNum = OpationFinishNum + 1
+          opationInfo = opationInfo.concat(value)
+          if (questionInfo.length === OpationFinishNum) {
+            result.status = 1
+            return res.json({
+              statusObj: result,
+              inquiryInfo,
+              questionInfo,
+              opationInfo
+            })
+          }
+        })
       })
-    })  
+    } else {
+      result.status = 1
+      return res.json({
+        statusObj: result,
+        inquiryInfo,
+        questionInfo,
+        opationInfo
+      })
+    }
   })
   .catch(e => {
     console.log(e)
@@ -89,83 +99,35 @@ router.post('/selectInquiry', (req, res, next) => {
 })
 
 /**
- * 增加一条问题
+ * 保存一个问卷
  */
-router.post('/addQuestion', (req, res, next) => {
-  // 新建返回对象
+router.post('/saveInquiry', (req, res, next) => {
   let result = new resultFunction();
   let param = req.body
-  let questionId = uuid()
-  let questionInfo = {}
-  let opationInfo = []
-  // 调整序号
-  questionOperate.selectOne(param.inquiryId)
-  .then(value => {
-    let updateQuestionArr = []
-    value.forEach(questionItem => {
-      if (questionItem.num >= param.questionNum) {
-        // update 自己的num
-        updateQuestionArr.push({
-          id: questionItem.id,
-          num: questionItem.num + 1
-        })
-      }
-    })
-    questionOperate.updateQuestionNum(updateQuestionArr, () => {
-      questionOperate.addQuestion(param.inquiryId, param.questionNum, questionId, () => {
-    
-        // 查询自己刚插入的question信息
-        questionOperate.selectOneOnlyQuestion(questionId)
-        .then(value => {
-          questionInfo = value[0]
-          opationOperate.selectSomeOpations(questionId)
-          .then(value => {
-            opationInfo = value
+  let opationArr = []
+  // 首先查询所有的此问卷的相关信息
+  questionOperate.selectOne(param.inquiryInfo.id)
+  .then(questionArr => {
+    let OpationFinishNum = 0
+    questionArr.forEach ((item, index) => {
+      opationOperate.selectSomeOpations(item.id)
+      .then(value => {
+        OpationFinishNum = OpationFinishNum + 1
+        opationArr = opationArr.concat(value)
+        if (questionArr.length === OpationFinishNum) {
+          // 然后进行更新操作
+          inquiryOperate.updateAll(param.inquiryInfo, questionArr, opationArr, () => {
             result.status = 1
             return res.json({
-              statusObj: result,
-              questionInfo,
-              opationInfo
+              statusObj: result
             })
           })
-        })
+        }
       })
     })
   })
-})
-// 删除一条问题
-router.post('/deleteQuestion', (req, res, next) => {
-  let result = new resultFunction();
-  let param = req.body
-  questionOperate.selectOne(param.inquiryId)
-  .then(value => {
-    let upateQuestionArr = []
-    value.forEach(questionItem => {
-      if (questionItem.num > param.questionNum) {
-        // update 自己的num
-        upateQuestionArr.push({
-          id: questionItem.id,
-          num: questionItem.num - 1
-        })
-      }
-    })
-    questionOperate.updateQuestionNum(upateQuestionArr, () => {    
-      questionOperate.deleteQuestion(param.questionId, () => {
-        result.status = 1
-        return res.json({
-          statusObj: result
-        })
-      })
-    })
+  .catch(e => {
+    console.log(e)
   })
-})
-/**
- * 保存一个问题
- */
-router.post('/saveQuestion', (req, res, next) => {
-  let result = new resultFunction();
-  let param = req.body
-  // 传过来的对象参数 param.questionInfo param.questionNum
-  // 先删除这个问题的全部,然后插入这个问题.
 })
 module.exports = router;
