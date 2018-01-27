@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-19 16:11:31 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-26 00:04:55
+ * @Last Modified time: 2018-01-27 14:15:10
  */
 
 let inquiryMapper = require('../../resources/mapper/inquiryMapper');
@@ -24,12 +24,11 @@ inquiryOperate.insertOne = ({uuid, user_id, title, description, state}, fn) => {
   let end = myDate.toLocaleDateString();
   let sqlparam = new SqlParams()
   sqlparam.setSql(inquiryMapper.insertInquiry, [uuid, user_id, 0, title, now, end, description, state])
-  // ----------------这里不应该只插入问卷还得插入个问题两个选项.
   // 插入题目
   let question1Uuid = uuidin()
   let question2Uuid = uuidin()
-  sqlparam.setSql(questionMapper.insertQuestion, [question1Uuid, uuid, 1, 1, '新建问卷', ''])
-  sqlparam.setSql(questionMapper.insertQuestion, [question2Uuid, uuid, 2, 1, '新建问卷', ''])
+  sqlparam.setSql(questionMapper.insertQuestion, [question1Uuid, uuid, 1, 1, '新建问题', ''])
+  sqlparam.setSql(questionMapper.insertQuestion, [question2Uuid, uuid, 2, 1, '新建问题', ''])
   // 插入选项
   sqlparam.setSql(opationMapper.insertOpation, [uuidin(), '', question1Uuid, '新建选项1', 0])
   sqlparam.setSql(opationMapper.insertOpation, [uuidin(), '', question1Uuid, '新建选项2', 0])
@@ -38,7 +37,14 @@ inquiryOperate.insertOne = ({uuid, user_id, title, description, state}, fn) => {
   // 开始事务,fn为成功回调函数
   db.transactions(sqlparam.sqlArr, fn)
 }
-
+/**
+ * 更新一个问题
+ */
+inquiryOperate.updateOne = (questionInfo, fn) => {
+  let sqlparam = new SqlParams()
+  sqlparam.setSql(questionMapper.deleteQuestion, [questionInfo.id])
+  db.transactions(sqlparam.sqlArr, fn)
+}
 /**
  * 查询一个问卷
  */
