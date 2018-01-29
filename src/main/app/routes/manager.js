@@ -6,6 +6,7 @@ let uuid = require('uuid');
 let inquiryOperate = require('../dao/inquiryDao');
 let questionOperate = require('../dao/questionDao')
 let opationOperate = require('../dao/opationDao')
+let epilogOperate = require('../dao/epilogDao')
 router.post('/index',(req, res, next)=>{
   // 新建返回对象
   let result = new resultFunction();
@@ -97,7 +98,38 @@ router.post('/selectInquiry', (req, res, next) => {
     return
   })
 })
-
+/**
+ * 查询结语
+ */
+router.post('/selectEpilog', (req, res, next) => {
+  // 新建返回对象
+  let result = new resultFunction();
+  // 从req中获取问卷标题
+  let param = req.body;
+  let epilogInfo = []
+  try {
+    epilogOperate.getEpilogById(param.inquiryId)
+    .then(value => {
+      value.forEach(item => {
+        epilogInfo.push({
+          minScore: item.begin_score,
+          maxScore: item.end_score,
+          remark: item.remark
+        })
+      })
+      result.status = 1
+      return res.json({
+        statusObj: result,
+        epilogInfo
+      })
+    })
+    .catch (e => {
+      console.log(e)
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
 /**
  * 保存一个问卷
  */
@@ -129,5 +161,24 @@ router.post('/saveInquiry', (req, res, next) => {
   .catch(e => {
     console.log(e)
   })
+})
+/**
+ * 保存一个问卷的结语
+ */
+router.post('/saveEpilog', (req, res, next) => {
+  let result = new resultFunction();
+  let param = req.body
+  // param.inquiryId param.inquiryEpilog
+  try {
+    epilogOperate.saveEpilog(param.inquiryId, param.inquiryEpilog, () => {
+      // 成功了的话
+      result.status = 1
+      return res.json({
+        statusObj: result
+      })
+    })
+  } catch (error) {
+    console.log(error)
+  }
 })
 module.exports = router;
