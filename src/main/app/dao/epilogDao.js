@@ -2,10 +2,11 @@
  * @Author: qc
  * @Date: 2018-01-29 13:43:44 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-29 16:06:22
+ * @Last Modified time: 2018-01-31 11:16:51
  */
 
 let epilogMapper = require('../../resources/mapper/epilogMapper')
+let inquiryMapper = require('../../resources/mapper/inquiryMapper');
 let db = require('../../resources/dbconnect');
 let uuid = require('uuid')
 let SqlParams = require('../../resources/SqlParams')
@@ -21,8 +22,8 @@ epilogOperate.getEpilogById = id => {
 }
 /**
  * 保存一个问卷的评语
- */
-epilogOperate.saveEpilog = (inquiryId, epilogArr, fn) => {
+ */ 
+epilogOperate.saveEpilog = (inquiryId, inquiryStep, epilogArr, fn) => {
   let sqlparam = new SqlParams()
   // 先删除
   sqlparam.setSql(epilogMapper.deleteEpilogByInquiryId, [inquiryId])
@@ -31,6 +32,7 @@ epilogOperate.saveEpilog = (inquiryId, epilogArr, fn) => {
     sqlparam.setSql(epilogMapper.insertEpilog, [uuid(), item.minScore, item.maxScore, item.remark, inquiryId])
   })
   try {
+    sqlparam.setSql(inquiryMapper.updateInquiry, [inquiryStep, inquiryId])
     db.transactions(sqlparam.sqlArr, fn)
   } catch (error) {
     console.log(error)

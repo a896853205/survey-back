@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-19 16:11:31 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-28 00:19:58
+ * @Last Modified time: 2018-01-31 14:25:10
  */
 
 let inquiryMapper = require('../../resources/mapper/inquiryMapper');
@@ -48,7 +48,7 @@ inquiryOperate.selectOne = id => {
 /**
  * 更新问卷整体
  */
-inquiryOperate.updateAll = (inquiryInfo, questionArr, opationArr, fn) => {
+inquiryOperate.updateAll = (inquiryInfo, inquiryStep, questionArr, opationArr, fn) => {
   let sqlparam = new SqlParams()
   // 先全部清除
   questionArr.forEach(questionItem => {
@@ -68,6 +68,13 @@ inquiryOperate.updateAll = (inquiryInfo, questionArr, opationArr, fn) => {
   } catch (e) {
     console.log(e)
   }
+  // 在这里修改问卷的状态为2
+  sqlparam.setSql(inquiryMapper.updateInquiry, [inquiryStep, inquiryInfo.id])
   db.transactions(sqlparam.sqlArr, fn)
+}
+inquiryOperate.updateToggle = (inquiryId, inquirySwitch) => {
+  return new Promise((resolve, reject) => {
+    db.query(inquiryMapper.updateInquiryToggle, [inquirySwitch, inquiryId], resolve)
+  })
 }
 module.exports = inquiryOperate;

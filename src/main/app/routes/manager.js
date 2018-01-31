@@ -148,7 +148,7 @@ router.post('/saveInquiry', (req, res, next) => {
         opationArr = opationArr.concat(value)
         if (questionArr.length === OpationFinishNum) {
           // 然后进行更新操作
-          inquiryOperate.updateAll(param.inquiryInfo, questionArr, opationArr, () => {
+          inquiryOperate.updateAll(param.inquiryInfo, 2,questionArr, opationArr, () => {
             result.status = 1
             return res.json({
               statusObj: result
@@ -170,7 +170,26 @@ router.post('/saveEpilog', (req, res, next) => {
   let param = req.body
   // param.inquiryId param.inquiryEpilog
   try {
-    epilogOperate.saveEpilog(param.inquiryId, param.inquiryEpilog, () => {
+    epilogOperate.saveEpilog(param.inquiryId, 3, param.inquiryEpilog, () => {
+      // 成功了的话
+      result.status = 1
+      return res.json({
+        statusObj: result
+      })
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+/**
+ * 问卷是否开启
+ */
+router.post('/toggle', (req, res, next) => {
+  let result = new resultFunction();
+  let param = req.body
+  try {
+    inquiryOperate.updateToggle(param.inquiryId, param.inquriySwitch)
+    .then(value => {
       // 成功了的话
       result.status = 1
       return res.json({
