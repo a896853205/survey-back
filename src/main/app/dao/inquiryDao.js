@@ -2,12 +2,13 @@
  * @Author: qc
  * @Date: 2018-01-19 16:11:31 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-02-01 17:10:18
+ * @Last Modified time: 2018-02-01 20:33:08
  */
 
-let inquiryMapper = require('../../resources/mapper/inquiryMapper');
+let inquiryMapper = require('../../resources/mapper/inquiryMapper')
 let questionMapper = require('../../resources/mapper/questionMapper')
 let opationMapper = require('../../resources/mapper/opationMapper')
+let epilogMapper = require('../../resources/mapper/epilogMapper')
 let uuidin = require('uuid')
 let db = require('../../resources/dbconnect');
 let SqlParams = require('../../resources/SqlParams')
@@ -95,6 +96,8 @@ inquiryOperate.deleteInquiry = (inquiryId, questionArr, fn) => {
     // 然后删除这个问题
     sqlparam.setSql(questionMapper.deleteQuestion, [questionItem.id])
   })
+  // 还得删除结语回答-------------------------------
+  sqlparam.setSql(epilogMapper.deleteEpilogByInquiryId, [inquiryId])
   sqlparam.setSql(inquiryMapper.deleteInquiry, [inquiryId])
   db.transactions(sqlparam.sqlArr, fn)
 }
