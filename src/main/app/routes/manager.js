@@ -200,4 +200,34 @@ router.post('/toggle', (req, res, next) => {
     console.log(error)
   }
 })
+router.post('/selectAllQuestion', (req, res, next) => {
+  let result = new resultFunction();
+  let user = req.local.user;
+  // 用用户的id查询所有它的问卷
+  inquiryOperate.selectAllInquiryByUserId(user.id)
+  .then(value => {
+    // 成功了的话
+    result.status = 1
+    return res.json({
+      statusObj: result,
+      inquiryData: value
+    })
+  })
+})
+// 删除问卷
+router.post('/deleteInquiry', (req, res, next) => {
+  let result = new resultFunction();
+  let param = req.body
+  // 先查询所有的问题,然后全部删除.
+  questionOperate.selectOne(param.inquiryId)
+  .then(questionArr => {
+    inquiryOperate.deleteInquiry(param.inquiryId, questionArr, () => {
+      // 成功了的话
+      result.status = 1
+      return res.json({
+        statusObj: result
+      })
+    })
+  })
+})
 module.exports = router;

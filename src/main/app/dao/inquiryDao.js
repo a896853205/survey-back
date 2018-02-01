@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-19 16:11:31 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-31 14:25:10
+ * @Last Modified time: 2018-02-01 17:10:18
  */
 
 let inquiryMapper = require('../../resources/mapper/inquiryMapper');
@@ -77,4 +77,26 @@ inquiryOperate.updateToggle = (inquiryId, inquirySwitch) => {
     db.query(inquiryMapper.updateInquiryToggle, [inquirySwitch, inquiryId], resolve)
   })
 }
+/**
+ * 通过用户的id查询所有的问卷
+ * @param {String} user_id 用户的id
+ */
+inquiryOperate.selectAllInquiryByUserId = user_id => {
+  return new Promise((resolve, reject) => {
+    db.query(inquiryMapper.selectAllInquiryByUserId, [user_id], resolve)
+  })
+}
+// 删除一个问卷的所有
+inquiryOperate.deleteInquiry = (inquiryId, questionArr, fn) => {
+  let sqlparam = new SqlParams()
+  // 先全部清除
+  questionArr.forEach(questionItem => {
+    sqlparam.setSql(opationMapper.deleteSomeOpations, [questionItem.id])
+    // 然后删除这个问题
+    sqlparam.setSql(questionMapper.deleteQuestion, [questionItem.id])
+  })
+  sqlparam.setSql(inquiryMapper.deleteInquiry, [inquiryId])
+  db.transactions(sqlparam.sqlArr, fn)
+}
+
 module.exports = inquiryOperate;
