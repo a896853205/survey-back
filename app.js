@@ -17,9 +17,7 @@ let verifyIdMiddle = require(`${mainPath}/app/middle/checkId`);
 let verifyRoleMiddle = require(`${mainPath}/app/middle/checkRole`);
 
 // 路由
-var indexRouter = require(`${mainPath}/app/routes/index`);
-let LoginRouter = require(`${mainPath}/app/routes/login`);
-let registerRouter = require(`${mainPath}/app/routes/register`);
+var noneRouter = require(`${mainPath}/app/routes/none`)
 let getTokenRouter = require(`${mainPath}/app/routes/getToken`);
 let getNavRouter = require(`${mainPath}/app/routes/nav`)
 
@@ -43,7 +41,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 没有权限的的路由
-app.use('/', indexRouter, LoginRouter, registerRouter);
+app.use('/', noneRouter);
 // 判断登录权限的中间件
 app.use('/home', verifyIdMiddle, verifyRoleMiddle);
 // 判断结束进入主页

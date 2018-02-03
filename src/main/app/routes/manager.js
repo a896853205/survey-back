@@ -7,14 +7,6 @@ let inquiryOperate = require('../dao/inquiryDao');
 let questionOperate = require('../dao/questionDao')
 let opationOperate = require('../dao/opationDao')
 let epilogOperate = require('../dao/epilogDao')
-router.post('/index',(req, res, next)=>{
-  // 新建返回对象
-  let result = new resultFunction();
-  // 管理员业务逻辑代码
-  result.status = 1;
-  res.json(result);
-});
-
 // 增加问卷
 router.post('/addInquiry', (req, res, next) => {
   // 新建返回对象
