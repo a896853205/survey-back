@@ -14,6 +14,7 @@ router.post('/addInquiry', (req, res, next) => {
   // 从req中获取问卷标题
   let param = req.body;
   // 从token获取user信息
+  // @ts-ignore
   let user = req.local.user;
   // 这里将自己的id传入dao中插入一条问卷,状态为1,开关为关,插入标题,描述,生成创建时间.
   let par = {
@@ -193,8 +194,9 @@ router.post('/toggle', (req, res, next) => {
   }
 })
 router.post('/selectAllQuestion', (req, res, next) => {
-  let result = new resultFunction();
-  let user = req.local.user;
+  let result = new resultFunction()
+  // @ts-ignore
+  let user = req.local.user
   // 用用户的id查询所有它的问卷
   inquiryOperate.selectAllInquiryByUserId(user.id)
   .then(value => {

@@ -10,53 +10,25 @@ let opationOperate = require('../dao/opationDao')
 let epilogOperate = require('../dao/epilogDao')
 let userOperate = require('../dao/userDao')
 
+let inquriyService = require('../service/inquiryService')
+
 // 查询问卷
 router.post('/selectInquiry', (req, res, next) => {
   // 新建返回对象
   let result = new resultFunction();
   // 从req中获取问卷标题
   let param = req.body;
-  let inquiryInfo = null
-  let questionInfo = []
-  let opationInfo = []
-  inquiryOperate.selectOne(param.inquiryId)
-  .then(value => {
-    inquiryInfo = value[0]
-    return questionOperate.selectOne(inquiryInfo.id)
-  })
-  .then(value => {
-    questionInfo = value
-    let OpationFinishNum = 0
-    if (questionInfo.length !== 0) {
-      questionInfo.forEach ((item, index) => {
-        opationOperate.selectSomeOpations(item.id)
-        .then(value => {
-          OpationFinishNum = OpationFinishNum + 1
-          opationInfo = opationInfo.concat(value)
-          if (questionInfo.length === OpationFinishNum) {
-            result.status = 1
-            return res.json({
-              statusObj: result,
-              inquiryInfo,
-              questionInfo,
-              opationInfo
-            })
-          }
-        })
-      })
-    } else {
-      result.status = 1
-      return res.json({
-        statusObj: result,
-        inquiryInfo,
-        questionInfo,
-        opationInfo
-      })
-    }
-  })
-  .catch(e => {
-    console.log(e)
-    return
+  // param.inquiryId
+  // 这里需要判断switch是否开启,否则跳到别的地方
+  inquriyService.selectInquiry(param.inquiryId)
+  .then(({inquiryInfo, questionInfo, opationInfo}) => {
+    result.status = 1
+    return res.json({
+      statusObj: result,
+      inquiryInfo,
+      questionInfo,
+      opationInfo
+    })
   })
 })
 /**
