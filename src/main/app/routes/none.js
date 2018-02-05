@@ -19,16 +19,33 @@ router.post('/selectInquiry', (req, res, next) => {
   // 从req中获取问卷标题
   let param = req.body;
   // param.inquiryId
-  // 这里需要判断switch是否开启,否则跳到别的地方
-  inquriyService.selectInquiry(param.inquiryId)
-  .then(({inquiryInfo, questionInfo, opationInfo}) => {
-    result.status = 1
+  inquiryOperate.selectOne(param.inquiryId)
+  .then(value => {
+    // 这里需要判断switch是否开启,否则跳到别的地方
+    if (value[0]) {
+      if (value[0].switch === '1') {
+        return inquriyService.selectInquiry(param.inquiryId)
+      }
+    }
+    result.errMessage = '问卷未开启'
     return res.json({
-      statusObj: result,
-      inquiryInfo,
-      questionInfo,
-      opationInfo
+      statusObj: result
     })
+  })
+  .then(({inquiryInfo, questionInfo, opationInfo}) => {
+    // 先判断上面是否开启问卷之类的
+    if (result.errMessage === '') {
+      result.status = 1
+      return res.json({
+        statusObj: result,
+        inquiryInfo,
+        questionInfo,
+        opationInfo
+      })
+    }
+  })
+  .catch(e => {
+    console.log(e)
   })
 })
 /**

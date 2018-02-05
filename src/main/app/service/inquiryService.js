@@ -3,7 +3,10 @@ let questionOperate = require('../dao/questionDao')
 let opationOperate = require('../dao/opationDao')
 
 let inquiryService = {}
-
+/**
+ * 查询问卷的所有信息(问题和选项)
+ * @param {String} inquiryId 问卷的id
+ */
 inquiryService.selectInquiry = (inquiryId) => {
   return new Promise((resolve, reject) => {
     // 从req中获取问卷标题
@@ -17,22 +20,12 @@ inquiryService.selectInquiry = (inquiryId) => {
     })
     .then(value => {
       questionInfo = value
-      let OpationFinishNum = 0
+      let opationPromise = []
       if (questionInfo.length !== 0) {
         questionInfo.forEach ((item, index) => {
-          opationOperate.selectSomeOpations(item.id)
-          .then(value => {
-            OpationFinishNum = OpationFinishNum + 1
-            opationInfo = opationInfo.concat(value)
-            if (questionInfo.length === OpationFinishNum) {
-              resolve({
-                inquiryInfo,
-                questionInfo,
-                opationInfo
-              })
-            }
-          })
+          opationPromise.push(opationOperate.selectSomeOpations(item.id))
         })
+        return Promise.all(opationPromise)
       } else {
         resolve({
           inquiryInfo,
@@ -40,6 +33,18 @@ inquiryService.selectInquiry = (inquiryId) => {
           opationInfo
         })
       }
+    })
+    .then(value => {
+      let opationInfo = []
+      // value 是很多数组的数组,需要进行处理一下
+      value.forEach(item => {
+        opationInfo = opationInfo.concat(item)
+      })
+      resolve({
+      inquiryInfo,
+      questionInfo,
+      opationInfo
+      })
     })
     .catch(e => {
       console.log(e)
