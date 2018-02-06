@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-29 13:43:44 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-31 11:16:51
+ * @Last Modified time: 2018-02-06 12:43:56
  */
 
 let epilogMapper = require('../../resources/mapper/epilogMapper')
@@ -18,6 +18,15 @@ let epilogOperate = {};
 epilogOperate.getEpilogById = id => {
   return new Promise((resolve, reject) => {
     db.query(epilogMapper.getEpilogById, [id], resolve)
+  })
+}
+epilogOperate.getEpilogByAnswerId = answerId => {
+  return new Promise((resolve, reject) => {
+    try {
+      db.query(epilogMapper.getEpilogByAnswerId, [answerId], resolve)
+    } catch (error) {
+      console.log(error)
+    }
   })
 }
 /**

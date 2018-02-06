@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-19 16:11:31 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-02-01 20:33:08
+ * @Last Modified time: 2018-02-06 16:17:36
  */
 
 let inquiryMapper = require('../../resources/mapper/inquiryMapper')
@@ -76,6 +76,15 @@ inquiryOperate.updateAll = (inquiryInfo, inquiryStep, questionArr, opationArr, f
 inquiryOperate.updateToggle = (inquiryId, inquirySwitch) => {
   return new Promise((resolve, reject) => {
     db.query(inquiryMapper.updateInquiryToggle, [inquirySwitch, inquiryId], resolve)
+  })
+}
+/**
+ * 根据回答id查询出问卷信息
+ * @param {String} answerId 回答id
+ */
+inquiryOperate.selectInquiryByAnswerId = answerId => {
+  return new Promise((resolve, reject) => {
+    db.query(inquiryMapper.selectInquiryByAnswerId, [answerId], resolve)
   })
 }
 /**

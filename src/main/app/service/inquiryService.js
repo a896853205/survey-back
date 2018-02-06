@@ -7,7 +7,7 @@ let inquiryService = {}
  * 查询问卷的所有信息(问题和选项)
  * @param {String} inquiryId 问卷的id
  */
-inquiryService.selectInquiry = (inquiryId) => {
+inquiryService.selectInquiry = inquiryId => {
   return new Promise((resolve, reject) => {
     // 从req中获取问卷标题
     let inquiryInfo = null
@@ -53,4 +53,4 @@ inquiryService.selectInquiry = (inquiryId) => {
   })
 }
 
-module.exports = inquiryService;
+module.exports = inquiryService

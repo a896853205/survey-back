@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+let uuid = require('uuid')
 let webToken = require('../common/token');
 // 返回状态对象
 let resultFunction = require('../common/returnObject')
@@ -9,7 +9,9 @@ let questionOperate = require('../dao/questionDao')
 let opationOperate = require('../dao/opationDao')
 let epilogOperate = require('../dao/epilogDao')
 let userOperate = require('../dao/userDao')
-
+let answerOperate = require('../dao/answerDao')
+// service
+let answerService = require('../service/answerService')
 let inquriyService = require('../service/inquiryService')
 
 // 查询问卷
@@ -118,16 +120,67 @@ router.post('/login',(req, res, next)=>{
           user: dataBaseUser
         });
       }else{
-        result.errMessage = '密码不正确';
+        result.errMessage = '密码不正确'
         return res.json({
           statusObj: result
-        });
+        })
       }
     }
   }).catch((err) => {
     // 返回错误的json
     console.log(err);
-  });
-});
+  })
+})
+// 保存回答
+router.post('/saveAnswer', (req, res, next) => {
+  // 新建返回对象
+  let result = new resultFunction()
+  let param = req.body
+  let totalNum = 0
+  param.questionData.forEach(questionItem => {
+    questionItem.opationData.forEach(opationItem => {
+      if (opationItem.isActive) {
+        totalNum = totalNum + opationItem.score
+      }
+    })
+  })
+  let answerId = uuid()
+  // 插入问卷回答的信息和所有的回答的信息.(事务处理)
+  answerOperate.insertOne(totalNum, param.id, param, answerId)
+  .then(value => {
+    result.status = 1
+    return res.json({
+      statusObj: result,
+      answerId
+    })
+  })
+  .catch(e => {
+    console.log(e)
+  })
+})
 
+router.post('/getAnalyze', (req, res, next) => {
+  // 新建返回对象
+  let result = new resultFunction()
+  let param = req.body
+  // 根据回答id查询问卷id再查出所有回答
+  answerService.getAnalyze(param.answerId)
+  .then(({analyzeArr, myEpilog, myAnswer, myInquiry}) => {
+    // 查询所有这个问卷的所有回答,查询这个问卷的所有结语
+    // 处理成下面的形式
+    // [{score: '0~5',num: 10}, {score: '6~10',num: 21}]
+    // 和自己的分数, 和对应的结语, 返回给前台
+    result.status = 1
+    return res.json({
+      statusObj: result,
+      analyzeArr,
+      myEpilog,
+      myAnswer,
+      myInquiry
+    })
+  })
+  .catch(e => {
+    console.log(e)
+  })
+})
 module.exports = router;
