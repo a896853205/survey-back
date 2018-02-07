@@ -114,6 +114,16 @@ router.post('/login',(req, res, next)=>{
         // 返回status和token
         let dataBaseUser = value[0];
         dataBaseUser.password = '';
+        switch (dataBaseUser.role_id) {
+          case '1': 
+            dataBaseUser.baseUrl = '/super'
+            break
+          case '2':
+            dataBaseUser.baseUrl = '/manager'
+            break
+          default:
+            dataBaseUser.baseUrl = '/'
+        }
         return res.json({
           statusObj: result, 
           token: webToken.getToken(value[0]), 

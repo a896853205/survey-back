@@ -22,6 +22,7 @@ let getTokenRouter = require(`${mainPath}/app/routes/getToken`);
 let getNavRouter = require(`${mainPath}/app/routes/nav`)
 
 let managerRouter = require(`${mainPath}/app/routes/manager`);
+let superRouter = require(`${mainPath}/app/routes/super`)
 
 var app = express();
 
@@ -46,6 +47,8 @@ app.use('/', noneRouter);
 app.use('/home', verifyIdMiddle, verifyRoleMiddle);
 // 判断结束进入主页
 app.use('/home/manager', managerRouter);
+// 判断结束进入主页
+app.use('/home/super', superRouter);
 // 获取token的值,根据自己的权限获取nav的值
 app.use('/home/all', getTokenRouter, getNavRouter);
 // catch 404 and forward to error handler

@@ -224,6 +224,9 @@ router.post('/getAllAnswerByInquiryId', (req, res, next) => {
     })
   })
 })
+/**
+ * 更新自己的信息
+ */
 router.post('/updateMyInfo', (req, res, next) => {
   let result = new resultFunction()
   let param = req.body
@@ -247,4 +250,5 @@ router.post('/updateMyInfo', (req, res, next) => {
     })
   })
 })
+
 module.exports = router;
