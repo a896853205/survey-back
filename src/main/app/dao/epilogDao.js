@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-29 13:43:44 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-02-06 12:43:56
+ * @Last Modified time: 2018-02-07 11:44:30
  */
 
 let epilogMapper = require('../../resources/mapper/epilogMapper')
@@ -13,7 +13,7 @@ let SqlParams = require('../../resources/SqlParams')
 let epilogOperate = {};
 
 /**
- * 查询一个问卷的评语
+ * 查询一个问卷的评语(根据问卷id)
  */
 epilogOperate.getEpilogById = id => {
   return new Promise((resolve, reject) => {

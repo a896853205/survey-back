@@ -7,4 +7,4 @@ module.exports = {
   deleteEpilogByInquiryId: 'delete from b_comment where inquiry_id = ?',
   // 增加一条结语
   insertEpilog: 'insert into b_comment (id, begin_score, end_score, remark, inquiry_id) values (?, ?, ?, ?, ?)'
-};
+}

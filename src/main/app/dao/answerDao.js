@@ -46,4 +46,10 @@ answerOperate.selectOneByAnswerId = answerId => {
     db.query(answerMapper.selectOneByAnswerId, [answerId], resolve)
   })
 }
+// 根据inquiryid查询所有回答
+answerOperate.selectAllByInquiryId = inquiryId => {
+  return new Promise((resolve, reject) => {
+    db.query(answerMapper.selectAllByInquiryId, [inquiryId], resolve)
+  })
+}
 module.exports = answerOperate

@@ -7,8 +7,10 @@ let inquiryOperate = require('../dao/inquiryDao');
 let questionOperate = require('../dao/questionDao')
 let opationOperate = require('../dao/opationDao')
 let epilogOperate = require('../dao/epilogDao')
+let answerOperate = require('../dao/answerDao')
 
 let inquriyService = require('../service/inquiryService')
+let answerService = require('../service/answerService')
 // 增加问卷
 router.post('/addInquiry', (req, res, next) => {
   // 新建返回对象
@@ -180,7 +182,7 @@ router.post('/selectAllQuestion', (req, res, next) => {
 })
 // 删除问卷
 router.post('/deleteInquiry', (req, res, next) => {
-  let result = new resultFunction();
+  let result = new resultFunction()
   let param = req.body
   // 先查询所有的问题,然后全部删除.
   questionOperate.selectOne(param.inquiryId)
@@ -191,6 +193,30 @@ router.post('/deleteInquiry', (req, res, next) => {
       return res.json({
         statusObj: result
       })
+    })
+  })
+})
+router.post('/getAnalyzeByInquiyrId', (req, res, next) => {
+  let result = new resultFunction()
+  let param = req.body
+  answerService.getAnalyzeByInquiryId(param.inquiryId)
+  .then(analyzeArr => {
+    result.status = 1
+    return res.json({
+      statusObj: result,
+      analyzeArr
+    })
+  })
+})
+router.post('/getAllAnswerByInquiryId', (req, res, next) => {
+  let result = new resultFunction()
+  let param = req.body
+  answerOperate.selectAllByInquiryId(param.inquiryId)
+  .then(value => {
+    result.status = 1
+    return res.json({
+      statusObj: result,
+      answerArr: value
     })
   })
 })
