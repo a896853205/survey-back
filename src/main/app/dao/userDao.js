@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2017-12-27 14:54:15 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-16 14:44:18
+ * @Last Modified time: 2018-02-07 15:31:08
  */
 let userMapper = require('../../resources/mapper/userMapper');
 let db = require('../../resources/dbconnect');
@@ -23,8 +23,15 @@ userOperate.oneUserQuery = account => {
  */
 userOperate.oneUserInsert = ({account, password}) => {
   return new Promise((resolve, reject)=>{
-    // 进行异步查询
     db.query(userMapper.insertOneUser,[uuid(), account, password, '2'], resolve);
   });
 };
+/**
+ * 更新一个用户
+ */
+userOperate.updateUser = ({account, password, name}) => {
+  return new Promise((resolve, reject) => {
+    db.query(userMapper.updateOneUser, [password, name, account], resolve);
+  })
+}
 module.exports = userOperate;

@@ -8,6 +8,7 @@ let questionOperate = require('../dao/questionDao')
 let opationOperate = require('../dao/opationDao')
 let epilogOperate = require('../dao/epilogDao')
 let answerOperate = require('../dao/answerDao')
+let userOperate = require('../dao/userDao')
 
 let inquriyService = require('../service/inquiryService')
 let answerService = require('../service/answerService')
@@ -208,6 +209,9 @@ router.post('/getAnalyzeByInquiyrId', (req, res, next) => {
     })
   })
 })
+/**
+ * 获取所有回答根据问卷id
+ */
 router.post('/getAllAnswerByInquiryId', (req, res, next) => {
   let result = new resultFunction()
   let param = req.body
@@ -217,6 +221,29 @@ router.post('/getAllAnswerByInquiryId', (req, res, next) => {
     return res.json({
       statusObj: result,
       answerArr: value
+    })
+  })
+})
+router.post('/updateMyInfo', (req, res, next) => {
+  let result = new resultFunction()
+  let param = req.body
+  if (!param.name) {
+    param.name = ''
+  }
+  if (!param.newPassword) {
+    param.newPassword = ''
+  }
+  // @ts-ignore
+  let user = req.local.user
+  userOperate.updateUser ({
+    account: user.account,
+    password: param.newPassword,
+    name: param.name
+  })
+  .then(() => {
+    result.status = 1
+    return res.json({
+      statusObj: result
     })
   })
 })
