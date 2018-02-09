@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2018-01-19 16:11:31 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-02-06 16:17:36
+ * @Last Modified time: 2018-02-09 13:11:58
  */
 
 let inquiryMapper = require('../../resources/mapper/inquiryMapper')
@@ -110,5 +110,10 @@ inquiryOperate.deleteInquiry = (inquiryId, questionArr, fn) => {
   sqlparam.setSql(inquiryMapper.deleteInquiry, [inquiryId])
   db.transactions(sqlparam.sqlArr, fn)
 }
-
+// 查询所有问卷
+inquiryOperate.selectAllInquiry = () => {
+  return new Promise((resolve, reject) => {
+    db.query(inquiryMapper.selectAllInquiry, [], resolve)
+  })
+}
 module.exports = inquiryOperate;

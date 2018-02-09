@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2017-12-27 14:54:15 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-02-07 15:31:08
+ * @Last Modified time: 2018-02-09 13:02:53
  */
 let userMapper = require('../../resources/mapper/userMapper');
 let db = require('../../resources/dbconnect');
@@ -32,6 +32,14 @@ userOperate.oneUserInsert = ({account, password}) => {
 userOperate.updateUser = ({account, password, name}) => {
   return new Promise((resolve, reject) => {
     db.query(userMapper.updateOneUser, [password, name, account], resolve);
+  })
+}
+/**
+ * 获取所有管理员
+ */
+userOperate.selectAllManager = () => {
+  return new Promise((resolve, reject) => {
+    db.query(userMapper.getAllUserByRoleId, ['2'], resolve)
   })
 }
 module.exports = userOperate;

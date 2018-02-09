@@ -2,11 +2,14 @@
  * @Author: qc
  * @Date: 2018-01-13 17:40:20 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-02-07 17:09:17
+ * @Last Modified time: 2018-02-09 15:39:01
  */
 let express = require('express');
 
 let userOperate = require('../dao/userDao')
+let inquiryOperate = require('../dao/inquiryDao');
+
+let userService = require('../service/userService')
 // 返回状态对象
 let resultFunction = require('../common/returnObject');
 let router = express.Router();
@@ -37,6 +40,39 @@ router.post('/updateMyInfo', (req, res, next) => {
       statusObj: result
     })
   })
+})
+/**
+ * 获取所有管理员
+ */
+router.post('/getAllManager', (req, res, next) => {
+  let result = new resultFunction()
+  userService.getManagerInquiry()
+  .then(managerArr => {
+    result.status = 1
+    return res.json({
+      statusObj: result,
+      managerArr
+    })
+  })
+})
+/**
+ * 问卷是否开启
+ */
+router.post('/toggle', (req, res, next) => {
+  let result = new resultFunction();
+  let param = req.body
+  try {
+    inquiryOperate.updateToggle(param.inquiryId, param.inquriySwitch)
+    .then(value => {
+      // 成功了的话
+      result.status = 1
+      return res.json({
+        statusObj: result
+      })
+    })
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 module.exports = router;

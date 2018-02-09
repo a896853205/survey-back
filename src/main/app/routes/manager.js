@@ -166,6 +166,9 @@ router.post('/toggle', (req, res, next) => {
     console.log(error)
   }
 })
+/**
+ * 查询所有问卷
+ */
 router.post('/selectAllQuestion', (req, res, next) => {
   let result = new resultFunction()
   // @ts-ignore

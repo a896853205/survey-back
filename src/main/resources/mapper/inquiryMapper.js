@@ -18,5 +18,7 @@ module.exports = {
   // 通过用户id查出该人的所有问卷
   selectAllInquiryByUserId: 'select * from b_inquiry where user_id = ?',
   // 删除一条问卷
-  deleteInquiry: 'delete from b_inquiry where id = ?'
+  deleteInquiry: 'delete from b_inquiry where id = ?',
+  // 查询所有问卷
+  selectAllInquiry: 'select * from b_inquiry'
 };
