@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 let uuid = require('uuid')
-let webToken = require('../common/token');
+let webToken = require('../common/token')
 // 返回状态对象
 let resultFunction = require('../common/returnObject')
+// dao
 let inquiryOperate = require('../dao/inquiryDao')
 let questionOperate = require('../dao/questionDao')
 let opationOperate = require('../dao/opationDao')
@@ -29,7 +30,8 @@ router.post('/selectInquiry', (req, res, next) => {
         return inquriyService.selectInquiry(param.inquiryId)
       }
     }
-    result.errMessage = '问卷未开启'
+    result.status = 1
+    result.errMessage = ''
     return res.json({
       statusObj: result
     })
@@ -160,7 +162,9 @@ router.post('/register', (req, res, next) => {
   })
   .then(() => {
     result.status = 1
-    return res.json()
+    return res.json({
+      statusObj: result
+    })
   })
   .catch(err => {
     // 返回错误的json

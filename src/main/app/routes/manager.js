@@ -32,20 +32,19 @@ router.post('/addInquiry', (req, res, next) => {
   try {
     inquiryOperate.insertOne(par, () => {
       // 插入成功
-      result.status = 1;
+      result.status = 1
       res.json({
         statusObj: result,
         inquiryId: par.uuid
-      });
+      })
     })
   } catch (e) {
-    console.log(e)
     result.errMessage = '问卷第一级别问卷插入失败'
     res.json({
       statusObj: result
-    });
+    })
   }
-});
+})
 
 // 查询问卷
 router.post('/selectInquiry', (req, res, next) => {
