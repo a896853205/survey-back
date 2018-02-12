@@ -2,11 +2,11 @@
  * @Author:qc
  * @Date: 2018-01-03 15:24:50 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-20 22:38:09
+ * @Last Modified time: 2018-02-12 20:36:34
  */
 let roleDao = require('../dao/roleDao');
 // 返回状态对象
-let resultFunction = require('../common/returnObject');
+let resultObject = require('../common/returnObject');
 /**
  * 查看权限中间件
  * @param {Object} req 请求
@@ -15,7 +15,7 @@ let resultFunction = require('../common/returnObject');
  */
 module.exports = (req, res, next) => {
   // 新建返回对象
-  let result = new resultFunction();
+  let result = new resultObject();
   let role = getRoleUrl(req.baseUrl,req.originalUrl);
   // 全部权限都可以的
   if(role === 'all')

@@ -2,7 +2,7 @@
  * @Author: qc
  * @Date: 2017-12-27 14:02:22 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-02-09 13:25:10
+ * @Last Modified time: 2018-02-12 23:03:02
  */
 module.exports = {
   // 查询用户信息根据用户名
@@ -13,4 +13,4 @@ module.exports = {
   updateOneUser: 'update s_user set password = ?, name = ? where account = ?',
   // 获取所有对应权限的用户
   getAllUserByRoleId: 'select * from s_user where role_id = ?'
-};
+}

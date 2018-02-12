@@ -2,12 +2,12 @@
  * @Author: qc
  * @Date: 2018-01-13 17:40:20 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-02-07 17:10:42
+ * @Last Modified time: 2018-02-12 20:37:20
  */
 let express = require('express');
 let webToken = require('../common/token');
 // 返回状态对象
-let resultFunction = require('../common/returnObject');
+let resultObject = require('../common/returnObject');
 let router = express.Router();
 
 let userOperate = require('../dao/userDao'); 
@@ -16,7 +16,7 @@ let userOperate = require('../dao/userDao');
  */
 router.post('/getToken',(req, res, next) => {
   // 新建返回对象
-  let result = new resultFunction()
+  let result = new resultObject()
   let token = req.headers["authorization"]
   let decoded = webToken.decodeDataToken(token)
   switch (decoded.role_id) {
@@ -29,7 +29,7 @@ router.post('/getToken',(req, res, next) => {
     default:
       decoded.baseUrl = '/'
   }
-  result.status = 1
+  result.linkSuccess()
   res.json({
     statusObj: result,
     user: decoded

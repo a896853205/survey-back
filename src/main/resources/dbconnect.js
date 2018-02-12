@@ -2,11 +2,11 @@
  * @Author: qc 
  * @Date: 2017-12-26 20:36:44 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-01-25 23:40:03
+ * @Last Modified time: 2018-02-12 23:02:42
  */
-let connectionConfig = require('./dbconfig');
-let mysql = require('mysql');
-let db = {};
+let connectionConfig = require('./dbconfig')
+let mysql = require('mysql')
+let db = {}
 /**
  * 基本查询函数
  * @param {String} sqllan 操作数据库语句
@@ -14,26 +14,26 @@ let db = {};
  * @param {Function} fn 成功时的回调函数
  */
 db.query = function (sqllan, params, fn) {
-  let connection = mysql.createConnection(connectionConfig);
+  let connection = mysql.createConnection(connectionConfig)
   connection.connect((err) => {
     if (err) {
-      console.log(err);
-      return;
+      console.log(err)
+      return
     }
   });
   connection.query(sqllan, params, (err, rows, fields) => {
     if (err) {
-      console.log(err);
-      return;
+      console.log(err)
+      return
     }
     if (fn) {
-      fn(rows);
+      fn(rows)
     }
   });
   connection.end((err) => {
     if(err)
-      return;
-  });
+      return
+  })
 }
 /**
  * 事件处理包装函数
@@ -79,4 +79,4 @@ function onceTransaction (connection, sqlParams, index, fn) {
   })
 }
 
-module.exports = db;
+module.exports = db
